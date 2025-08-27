@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>myFlashID — Developer Docs</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+    .doc-box {
+      max-width: 900px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2 {
+      margin-top: 0;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    pre {
+      background: rgba(0,0,0,0.4);
+      padding: 12px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    .callback-box {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+    }
+    .callback-box input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .preview {
+      margin-top: 15px;
+      font-family: monospace;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.5);
+    }
+    .note {
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-box">
+    <h1>myFlashID — Developer Documentation</h1>
+    <p>
+      myFlashID is a modern authentication system that lets users log in with a single identity across your apps.
+      Integrate it into your app by redirecting users to the authorization endpoint, then handling the callback.
+    </p>
+
+    <h2>Authorization Endpoint</h2>
+    <pre>GET https://auth.myflashid.com/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=CALLBACK_URL&response_type=code</pre>
+
+    <h2>Token Exchange</h2>
+    <pre>POST https://auth.myflashid.com/token
+Content-Type: application/json
+{
+  "client_id": "YOUR_CLIENT_ID",
+  "client_secret": "YOUR_CLIENT_SECRET",
+  "code": "AUTH_CODE",
+  "redirect_uri": "CALLBACK_URL",
+  "grant_type": "authorization_code"
+}</pre>
+
+    <h2>Callback URL Preview</h2>
+    <div class="callback-box">
+      <label for="callback">Enter your Callback URL:</label>
+      <input id="callback" type="text" placeholder="https://example.com/auth/callback/myflashid/" />
+      <div class="preview" id="preview">Redirect will look like: <br> https://example.com/auth/callback/myflashid/?code=123456</div>
+      <p class="note">(Preview updates as you type)</p>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById("callback");
+    const preview = document.getElementById("preview");
+    input.addEventListener("input", () => {
+      const url = input.value.trim() || "https://example.com/auth/callback/myflashid/";
+      preview.innerHTML = `Redirect will look like:<br> ${url}?code=123456`;
+    });
+  </script>
+</body>
+</html>
