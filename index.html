@@ -35,13 +35,13 @@
       border-radius: 10px;
       overflow-x: auto;
     }
-    .callback-box {
+    .callback-box, .apikey-box {
       margin: 20px 0;
       padding: 20px;
       background: rgba(255,255,255,0.05);
       border-radius: 15px;
     }
-    .callback-box input {
+    input {
       width: 100%;
       padding: 12px;
       border: none;
@@ -71,6 +71,12 @@
       myFlashID is a modern authentication system that lets users log in with a single identity across your apps.
       Integrate it into your app by redirecting users to the authorization endpoint, then handling the callback.
     </p>
+
+    <h2>Getting Your API Key</h2>
+    <div class="apikey-box">
+      <p>To obtain your API Key, log in to the <a href="https://dashboard.myflashid.com" target="_blank">myFlashID Developer Dashboard</a> and navigate to <strong>API Keys</strong>. Click <em>Generate New Key</em> and copy it for use in your applications.</p>
+      <input type="text" placeholder="Your API Key will appear here after generation" readonly />
+    </div>
 
     <h2>Authorization Endpoint</h2>
     <pre>GET https://auth.myflashid.com/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=CALLBACK_URL&response_type=code</pre>
