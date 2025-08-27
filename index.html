@@ -1,113 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>myFlashID — Developer Docs</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>myFlashID API Documentation</title>
   <style>
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-      color: white;
-      display: flex;
-      justify-content: center;
-      padding: 40px;
-    }
-    .doc-box {
-      max-width: 900px;
-      width: 100%;
-      padding: 30px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(15px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-    }
-    h1, h2 {
-      margin-top: 0;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    pre {
-      background: rgba(0,0,0,0.4);
-      padding: 12px;
-      border-radius: 10px;
-      overflow-x: auto;
-    }
-    .callback-box, .apikey-box {
-      margin: 20px 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #fff;
       padding: 20px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
     }
-    input {
-      width: 100%;
-      padding: 12px;
+    .glass-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    h1, h2, h3 {
+      color: #fff;
+    }
+    input, button, textarea {
+      padding: 10px;
+      border-radius: 8px;
       border: none;
-      border-radius: 12px;
-      outline: none;
-      margin-bottom: 10px;
-      background: rgba(255,255,255,0.1);
-      color: white;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 1rem;
     }
-    .preview {
-      margin-top: 15px;
-      font-family: monospace;
-      padding: 12px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.5);
+    button {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .note {
-      font-size: 0.9em;
-      color: #aaa;
+    button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    code, pre {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      border-radius: 8px;
+      display: block;
+      overflow-x: auto;
+      color: #00ffea;
+    }
+    .callback-preview {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #00ffea;
     }
   </style>
 </head>
 <body>
-  <div class="doc-box">
-    <h1>myFlashID — Developer Documentation</h1>
-    <p>
-      myFlashID is a modern authentication system that lets users log in with a single identity across your apps.
-      Integrate it into your app by redirecting users to the authorization endpoint, then handling the callback.
-    </p>
+  <h1>myFlashID API Documentation</h1>
+  <div class="glass-box">
+    <h2>Overview</h2>
+    <p>myFlashID provides a secure way for users to log in to your app with modern authentication and liquid-glass design. This page helps developers integrate myFlashID quickly.</p>
+  </div>
 
-    <h2>Getting Your API Key</h2>
-    <div class="apikey-box">
-      <p>To obtain your API Key, log in to the <a href="https://dashboard.myflashid.com" target="_blank">myFlashID Developer Dashboard</a> and navigate to <strong>API Keys</strong>. Click <em>Generate New Key</em> and copy it for use in your applications.</p>
-      <input type="text" placeholder="Your API Key will appear here after generation" readonly />
-    </div>
+  <div class="glass-box">
+    <h2>API Key</h2>
+    <p>Every application needs an API key. You can generate one here and store it securely:</p>
+    <input type="text" id="apiKey" placeholder="Your API key will appear here" readonly>
+    <button onclick="generateKey()">Generate API Key</button>
+  </div>
 
-    <h2>Authorization Endpoint</h2>
-    <pre>GET https://auth.myflashid.com/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=CALLBACK_URL&response_type=code</pre>
+  <div class="glass-box">
+    <h2>Authentication Flow</h2>
+    <ol>
+      <li>User clicks "Login with myFlashID" in your app.</li>
+      <li>They’re redirected to myFlashID’s login screen.</li>
+      <li>After login, they’re redirected back to your provided Callback URL with an auth code.</li>
+      <li>Your server exchanges that code for a token using your API key.</li>
+    </ol>
+  </div>
 
-    <h2>Token Exchange</h2>
-    <pre>POST https://auth.myflashid.com/token
-Content-Type: application/json
-{
-  "client_id": "YOUR_CLIENT_ID",
-  "client_secret": "YOUR_CLIENT_SECRET",
-  "code": "AUTH_CODE",
-  "redirect_uri": "CALLBACK_URL",
-  "grant_type": "authorization_code"
-}</pre>
+  <div class="glass-box">
+    <h2>Callback URL Tester</h2>
+    <label for="callback">Enter your Callback URL:</label>
+    <input type="text" id="callback" placeholder="https://example.com/auth/callback/myflashid/" oninput="updatePreview()">
+    <div class="callback-preview" id="preview"></div>
+  </div>
 
-    <h2>Callback URL Preview</h2>
-    <div class="callback-box">
-      <label for="callback">Enter your Callback URL:</label>
-      <input id="callback" type="text" placeholder="https://example.com/auth/callback/myflashid/" />
-      <div class="preview" id="preview">Redirect will look like: <br> https://example.com/auth/callback/myflashid/?code=123456</div>
-      <p class="note">(Preview updates as you type)</p>
-    </div>
+  <div class="glass-box">
+    <h2>Example Request</h2>
+    <pre><code>POST https://api.myflashid.com/token
+Headers:
+  Authorization: Bearer &lt;YOUR_API_KEY&gt;
+  Content-Type: application/json
+Body:
+  {
+    "code": "AUTH_CODE",
+    "redirect_uri": "https://example.com/auth/callback/myflashid/"
+  }</code></pre>
   </div>
 
   <script>
-    const input = document.getElementById("callback");
-    const preview = document.getElementById("preview");
-    input.addEventListener("input", () => {
-      const url = input.value.trim() || "https://example.com/auth/callback/myflashid/";
-      preview.innerHTML = `Redirect will look like:<br> ${url}?code=123456`;
-    });
+    function updatePreview() {
+      const callback = document.getElementById('callback').value;
+      const preview = document.getElementById('preview');
+      if(callback) {
+        preview.textContent = `Redirect example: ${callback}?code=12345abcde`;
+      } else {
+        preview.textContent = '';
+      }
+    }
+
+    function generateKey() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let key = '';
+      for (let i = 0; i < 32; i++) {
+        key += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('apiKey').value = key;
+    }
   </script>
 </body>
 </html>
